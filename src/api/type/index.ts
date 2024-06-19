@@ -3,6 +3,7 @@
 // 定义服务器返回的数据类型
 export interface ResponseData {
   code: number
+  data: any
   msg: string
 }
 

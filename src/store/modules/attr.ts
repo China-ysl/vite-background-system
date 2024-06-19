@@ -8,6 +8,7 @@ import {
   getAttrValueList,
   removeValueList,
 } from '../../api/product/Attr/index'
+import { getSPUList } from '../../api/product/Spu/index'
 import type { AttrResponseData } from '../../api/product/Attr/type'
 import type { useAttrData, AttrList } from './types/routestype'
 let useAttrStore = defineStore('AttrStore', {
@@ -47,21 +48,9 @@ let useAttrStore = defineStore('AttrStore', {
       } else {
         return result.msg
       }
-    },
-    async getVauleList() {
-      let result: any = await getAttrValueList(
-        this.Attr1Id,
-        this.Attr2Id,
-        this.Attr3Id,
-      )
-      if (result.code == 200) {
-        this.AttrValueList = result.data
-      } else {
-        return result.msg
-      }
-    },
+    }
   },
-  getters: {},
+  getters: {}
 })
 
 export default useAttrStore

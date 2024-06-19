@@ -2,93 +2,40 @@
   <!-- 引入三级分类组件 -->
   <Classify :scene="scene"></Classify>
   <el-card style="margin-top: 5px" shadow="always">
-    <el-input
-      v-show="scene == 1"
-      v-model="AttrValueForm.attrname"
-      style="max-width: 600px"
-    >
+    <el-input v-show="scene == 1" v-model="AttrValueForm.attrname" style="max-width: 600px">
       <template #prepend>新增属性名称:</template>
     </el-input>
-    <el-button
-      v-show="scene == 0"
-      class="button_add"
-      type="primary"
-      icon="Plus"
-      plain
-      @click="addAttr"
-      :disabled="attrStore.Attr3Id ? false : true"
-      style="width: 130px"
-    >
+    <el-button v-show="scene == 0" class="button_add" type="primary" icon="Plus" plain @click="addAttr"
+      :disabled="attrStore.Attr3Id ? false : true" style="width: 130px">
       添加平台属性
     </el-button>
     <!-- 表单数据展示区场景 -->
     <div v-show="scene == 0">
-      <el-table
-        class="table_css"
-        style="margin: 10px 0px"
-        :data="attrStore.AttrValueList"
-        border
-      >
-        <el-table-column
-          class="column"
-          type="index"
-          align="center"
-          label="序号"
-          width="130"
-        />
-        <el-table-column
-          class="column"
-          align="center"
-          label="属性名称"
-          width="150"
-        >
+      <el-table class="table_css" style="margin: 10px 0px" :data="attrStore.AttrValueList" border>
+        <el-table-column class="column" type="index" align="center" label="序号" width="130" />
+        <el-table-column class="column" align="center" label="属性名称" width="150">
+
           <template #="{ row, $index }">
             <pre style="font-family: \5FAE\8F6F\96C5\9ED1">{{
-              row.attrname
-            }}</pre>
+    row.attrname
+  }}</pre>
           </template>
         </el-table-column>
-        <el-table-column
-          class="column"
-          align="center"
-          label="属性值名称"
-          min-width="300"
-        >
+        <el-table-column class="column" align="center" label="属性值名称" min-width="300">
+
           <template #="{ row, $index }">
-            <el-tag
-              v-for="(item, index) in row.attrValueList"
-              :key="item.id"
-              size="large"
-              class="valuename-tag"
-            >
+            <el-tag v-for="(item, index) in row.attrValueList" :key="item.id" size="large" class="valuename-tag">
               {{ item.valuename }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column
-          class="column"
-          prop="operate"
-          align="center"
-          label="操作"
-          width="250"
-        >
+        <el-table-column class="column" prop="operate" align="center" label="操作" width="250">
           <!-- 修改删除组件 -->
 
           <template #="{ row, $index }">
             <el-button-group class="ml-4">
-              <el-button
-                @click="handleEdit($index, row)"
-                class="Edit"
-                type="primary"
-                icon="Edit"
-              />
-              <el-button
-                plain
-                @click="platFormDelete($index, row)"
-                class="Delete"
-                type="primary"
-                icon="Delete"
-              />
+              <el-button @click="handleEdit($index, row)" class="Edit" type="primary" icon="Edit" />
+              <el-button plain @click="platFormDelete($index, row)" class="Delete" type="primary" icon="Delete" />
             </el-button-group>
           </template>
         </el-table-column>
@@ -96,91 +43,41 @@
     </div>
     <!-- 添加修改平台属性场景 -->
     <div v-show="scene == 1">
-      <el-table
-        class="table_css"
-        style="margin: 10px 0px"
-        :data="AttrValueForm.attrValueList"
-        border
-      >
-        <el-table-column
-          class="column"
-          type="index"
-          align="center"
-          label="序号"
-          width="129"
-        />
+      <el-table class="table_css" style="margin: 10px 0px" :data="AttrValueForm.attrValueList" border>
+        <el-table-column class="column" type="index" align="center" label="序号" width="129" />
         <el-table-column class="column" label="添加属性值" min-width="300">
+
           <template #="{ row, $index }">
             <!-- 收集valuename -->
-            <el-input
-              v-if="row.pattern"
-              :ref="(vc: any) => InputAttrList[$index] = vc"
-              v-model="row.valuename"
-              style="width: 240px"
-              placeholder="Please Input"
-              @blur="loseFocus(row, $index)"
-            />
+            <el-input v-if="row.pattern" :ref="(vc: any) => InputAttrList[$index] = vc" v-model="row.valuename"
+              style="width: 240px" placeholder="Please Input" @blur="loseFocus(row, $index)" />
             <!-- 展示valuename -->
-            <el-tag
-              v-else
-              @click="Editvaluename(row, $index)"
-              size="large"
-              class="valuename-tag"
-            >
+            <el-tag v-else @click="Editvaluename(row, $index)" size="large" class="valuename-tag">
               {{ row.valuename }}
             </el-tag>
           </template>
         </el-table-column>
         <!-- 修改删除组件 -->
-        <el-table-column
-          class="column"
-          prop="operate"
-          align="center"
-          label="操作"
-          min-width="250"
-        >
+        <el-table-column class="column" prop="operate" align="center" label="操作" min-width="250">
+
           <template #="{ row, $index }">
             <el-button-group class="ml-4">
-              <el-button
-                plain
-                @click="handleDelete($index, row)"
-                class="Delete"
-                size="small"
-                type="primary"
-                icon="Delete"
-              />
+              <el-button plain @click="handleDelete($index, row)" class="Delete" size="small" type="primary"
+                icon="Delete" />
             </el-button-group>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <el-button
-      v-show="scene == 1"
-      class="button_add"
-      type="primary"
-      plain
-      @click="AddAttrValueName"
-      :disabled="AttrValueForm.attrname ? false : true"
-    >
+    <el-button v-show="scene == 1" class="button_add" type="primary" plain @click="AddAttrValueName"
+      :disabled="AttrValueForm.attrname ? false : true">
       添加属性值
     </el-button>
-    <el-button
-      v-show="scene == 1"
-      class="button_add"
-      type="primary"
-      plain
-      @click="AddAttrValueForm"
-      :disabled="AttrValueForm.attrValueList.length > 0 ? false : true"
-    >
+    <el-button v-show="scene == 1" class="button_add" type="primary" plain @click="AddAttrValueForm"
+      :disabled="AttrValueForm.attrValueList.length > 0 ? false : true">
       保存
     </el-button>
-    <el-button
-      v-show="scene == 1"
-      class="button_add"
-      type="primary"
-      plain
-      @click="CancelScene"
-    >
+    <el-button v-show="scene == 1" class="button_add" type="primary" plain @click="CancelScene">
       取消
     </el-button>
   </el-card>
@@ -195,7 +92,7 @@ import {
   removeValueList,
 } from '../../../api/product/Attr/index'
 import useattrStore from '../../../store/modules/attr'
-import { reactive, ref, nextTick, onBeforeUnmount } from 'vue'
+import { reactive, ref, nextTick, onBeforeUnmount, watch} from 'vue'
 // 引入消息提示
 import { ElMessage, ElMessageBox } from 'element-plus'
 // attr仓库
@@ -218,6 +115,19 @@ let AttrValueForm = reactive<AttrValueForm>({
   attrValueList: [],
 })
 
+// 获取VauleList平台属性值方法
+let getVauleList = async () => {
+  let result: any = await getAttrValueList(attrStore.Attr1Id, attrStore.Attr2Id, attrStore.Attr3Id)
+  if (result.code == 200) {
+    attrStore.AttrValueList = result.data
+  } else {
+    return result.msg
+  }
+}
+// 监听attrStore.Attr3Id 数据是否变化
+watch(() => attrStore.Attr3Id, () => {
+  getVauleList()
+})
 // 取消添加场景回调
 const CancelScene = async () => {
   AttrValueForm.attrname = ''

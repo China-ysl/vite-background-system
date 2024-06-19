@@ -4,9 +4,11 @@ import router from './Route'
 // 引入鉴权
 import './permission'
 import App from './App.vue'
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
 import './styles/index.scss'
+import ElementPlus from 'element-plus'
+
+import 'element-plus/dist/index.css'
+
 // 引入icon图标
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 引入pinia仓库

@@ -10,9 +10,6 @@ import path from 'path'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 //VueSetupExtend 插件
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
-// https://vitejs.dev/config/({command}:ConfigEnv)
-// 引入mock插件
-import mockDevServerPlugin from 'vite-plugin-mock-dev-server'
 export default defineConfig({
   plugins: [
     vue(),
@@ -29,7 +26,6 @@ export default defineConfig({
       // Specify symbolId format
       symbolId: 'icon-[dir]-[name]',
     }),
-    mockDevServerPlugin(),
   ],
   resolve: {
     alias: {

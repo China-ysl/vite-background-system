@@ -4,112 +4,48 @@
     <!-- header头部 -->
     <template #header>
       <div class="card-header">
-        <el-button
-          class="button_icon"
-          type="primary"
-          icon="Plus"
-          plain
-          @click="addBrand"
-        >
+        <el-button class="button_icon" type="primary" icon="Plus" plain @click="addBrand">
           添加品牌
         </el-button>
-        <el-input
-          v-model="brandName"
-          style="width: 240px"
-          placeholder="品牌名称"
-          class="search"
-        >
+        <el-input v-model="brandName" style="width: 240px" placeholder="品牌名称" @clear="clearcontents"
+          @keyup.enter="getlist" clearable="true" class="search">
           <template #prefix>
             <el-icon class="el-input__icon">
               <search />
             </el-icon>
           </template>
         </el-input>
-        <el-button
-          @click="getlist"
-          class="button_icon"
-          type="primary"
-          icon="Search"
-          style="margin-left: 20px; width: 50px"
-        >
+        <el-button @click="getlist" class="button_icon" type="primary" icon="Search"
+          style="margin-left: 20px; width: 50px">
           GO
-        </el-button>
-        <el-button
-          @click="RefreshBrand"
-          class="button_Refresh"
-          type="primary"
-          icon="Refresh"
-          style="margin-left: 20px; width: 100px"
-        >
-          重置
         </el-button>
       </div>
     </template>
     <!-- 表单数据区 -->
     <el-table class="table_css" :data="BrandList" border>
-      <el-table-column
-        class="column"
-        type="index"
-        align="center"
-        label="序号"
-        width="100"
-      />
-      <el-table-column
-        class="column"
-        align="center"
-        label="品牌名称"
-        min-width="200"
-      >
+      <el-table-column class="column" type="index" align="center" label="序号" width="100" />
+      <el-table-column class="column" align="center" label="品牌名称" min-width="200">
+
         <template #="{ row, $index }">
           <pre style="font-family: \5FAE\8F6F\96C5\9ED1">{{
-            row.brandName
-          }}</pre>
+          row.brandName
+        }}</pre>
         </template>
       </el-table-column>
-      <el-table-column
-        class="column"
-        align="center"
-        label="品牌LOGO"
-        min-width="200"
-      >
+      <el-table-column class="column" align="center" label="品牌LOGO" min-width="200">
+
         <template #="{ row, $index }">
-          <img
-            :src="row.logoUrl"
-            alt=""
-            style="width: 100pxl; height: 100px; display: inline-block"
-          />
+          <img :src="row.logoUrl" alt="" style="width: 100pxl; height: 100px; display: inline-block" />
         </template>
       </el-table-column>
-      <el-table-column
-        class="column"
-        prop="createTime"
-        align="center"
-        label="创建时间"
-        min-width="200"
-      />
-      <el-table-column
-        class="column"
-        prop="operate"
-        align="center"
-        label="操作"
-        min-width="200"
-      >
+      <el-table-column class="column" prop="createTime" align="center" label="创建时间" min-width="200" />
+      <el-table-column class="column" prop="operate" align="center" label="操作" min-width="200">
         <!-- 修改删除组件 -->
+
         <template #="{ row, $index }">
           <el-button-group class="ml-4">
-            <el-button
-              @click="handleEdit($index, row)"
-              class="Edit"
-              type="primary"
-              :icon="Edit"
-            />
-            <el-button
-              plain
-              @click="handleDelete($index, row)"
-              class="Delete"
-              type="primary"
-              :icon="Delete"
-            />
+            <el-button @click="handleEdit($index, row)" class="Edit" type="primary" :icon="Edit" />
+            <el-button plain @click="handleDelete($index, row)" class="Delete" type="primary" :icon="Delete" />
           </el-button-group>
         </template>
       </el-table-column>
@@ -124,21 +60,11 @@
     @current-change="getlist"当页码发生改变时触发 调用getlist方法获取品牌数据
     -->
     <div class="demo-pagination-block">
-      <el-pagination
-        @size-change="changeSize"
-        @current-change="getlist"
-        :pager-count="5"
-        v-model:current-page="pageNum"
-        v-model:page-size="pageSize"
-        :page-sizes="[3, 5, 7, 9]"
-        :disabled="disabled"
-        :background="background"
-        layout="slot,prev, pager, next, jumper,->, sizes, total"
-        :total="total"
-      />
+      <el-pagination @size-change="changeSize" @current-change="getlist" :pager-count="5" v-model:current-page="pageNum"
+        v-model:page-size="pageSize" :page-sizes="[3, 5, 7, 9]" :disabled="disabled" :background="background"
+        layout="slot,prev, pager, next, jumper,->, sizes, total" :total="total" />
     </div>
   </el-card>
-
   <!-- 对话框组件 -->
   <el-dialog v-model="dialogFormVisible" :title="brandTitle" width="500">
     <el-form :model="BranForm" :rules="rules" ref="BranFormRef">
@@ -154,28 +80,25 @@
         :auto-upload="false" 是否自动上传文件
         :drag="true" 是否开启拖拽上传
         -->
-        <el-upload
-          class="avatar-uploader"
-          action="http://localhost:8989/Shopping/img"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img
-            w-full
-            v-if="BranForm.logoUrl"
-            :src="BranForm.logoUrl"
-            class="avatar"
-          />
+        <el-upload v-if="!BranForm.logoUrl" class="avatar-uploader" action="http://localhost:8989/Shopping/img" :headers="headersToken"
+          :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+          <img w-full v-if="BranForm.logoUrl" :src="BranForm.logoUrl" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon">
             <Plus />
           </el-icon>
         </el-upload>
+        <div v-else class="demo-image__preview">
+          <el-image style="width: 178px; height: 178px" :src="BranForm.logoUrl" :zoom-rate="1.2" :max-scale="7"
+            :min-scale="0.2" :preview-src-list="srcList" fit="cover" />
+        </div>
       </el-form-item>
     </el-form>
 
     <template #footer>
       <div class="dialog-footer">
+        <el-button :disabled="BranForm.logoUrl ? false : true" class="button_edit" @click="handleRemove" type="primary">
+          删除LOGO重新上传
+        </el-button>
         <el-button class="button_edit" @click="cancelUpload" type="primary">
           取消
         </el-button>
@@ -199,8 +122,12 @@ import { BrandList, BranForm } from '../../../api/product/brand/type'
 // 引入消息提示
 import { ElMessage } from 'element-plus'
 import { ElMessageBox } from 'element-plus'
+// 引用用户相关的pinia仓库
+import useUserStore from '../../../store/modules/user'
 // 引入限制文件上传数据类型
 import type { UploadProps, UploadInstance } from 'element-plus'
+// pinia user仓库
+let useStore = useUserStore()
 // 当前页码
 let pageNum = ref<number>(1)
 // 每页展示多少条数据
@@ -226,6 +153,10 @@ let BranForm = reactive<BranForm>({
   brandName: '',
   logoUrl: '',
 })
+// 上传图片集合
+const srcList = ref<string[]>([])
+// 是否预览上传图片 
+const dialogVisible = ref(false)
 // 获取le-form组件实例
 let BranFormRef = ref()
 // 添加品牌按钮方法
@@ -320,8 +251,9 @@ const changeSize = () => {
   pageNum.value = 1
   getlist()
 }
-// 搜索重置方法
-const RefreshBrand = () => {
+// 清除搜索框内容回调
+let clearcontents = () => {
+  console.log("清除搜索框内容回调");
   pageNum.value = 1
   brandName.value = ''
   getlist()
@@ -374,7 +306,14 @@ const handleDelete = async (index: number, row: any) => {
       })
     })
 }
-
+// 图片删除回调
+const handleRemove: any['onRemove'] = (uploadFile: any, uploadFiles: any) => {
+  BranForm.logoUrl = ''
+}
+// 携带token上传图片
+const headersToken = {
+  "token": useStore.token   // JWT认证，携带token
+}
 // 上传文件之前约束文件上传的类型大小的方法
 const beforeAvatarUpload: any['beforeUpload'] = (rawFile: any) => {
   console.log('上传文件之前约束文件上传的类型大小的方法')
@@ -406,6 +345,7 @@ const handleAvatarSuccess: any['onSuccess'] = async (
 ) => {
   console.log('上传文件')
   console.log(response.data)
+  srcList.value.push(response.data)
   ElMessage({
     message: '图片上传成功',
     type: 'success',
@@ -416,7 +356,7 @@ const handleAvatarSuccess: any['onSuccess'] = async (
   console.log('上传文件成功')
 }
 // 取消上传方法
-const cancelUpload = async () => {
+const cancelUpload = () => {
   BranForm.logoUrl = ''
   dialogFormVisible.value = false
 }
@@ -433,6 +373,7 @@ const cancelUpload = async () => {
 .button_Refresh {
   float: right;
 }
+
 .card-header {
   white-space: nowrap;
   // position: relative;
@@ -447,7 +388,7 @@ const cancelUpload = async () => {
 }
 
 /*分页器样式 */
-.demo-pagination-block + .demo-pagination-block {
+.demo-pagination-block+.demo-pagination-block {
   margin-top: 10px;
 }
 
@@ -457,6 +398,31 @@ const cancelUpload = async () => {
 
 .demo-pagination-block .demonstration {
   margin-bottom: 16px;
+}
+
+/* 预览缩放图片样式 */
+.img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.demo-image__error .image-slot {
+  font-size: 30px;
+}
+
+.demo-image__error .image-slot .el-icon {
+  font-size: 30px;
+}
+
+.demo-image__error .el-image {
+  width: 100%;
+  height: 200px;
+}
+
+.w-100\%,
+.w-full,
+[w-full=""] {
+  width: 100%;
 }
 
 // 修改按钮样式
